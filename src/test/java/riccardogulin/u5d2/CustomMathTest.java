@@ -13,6 +13,9 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 import lombok.extern.slf4j.Slf4j;
 import riccardogulin.u5d2.tools.CustomMath;
@@ -64,7 +67,21 @@ class CustomMathTest {
 		assertFalse(list.contains("Ajeje"));
 		assertEquals(3, list.size());
 
-		assertArrayEquals(new int[] { 1, 2, 3 }, new int[] { 1, 2, 4 });
+		assertArrayEquals(new int[] { 1, 2, 3 }, new int[] { 1, 2, 3 });
+	}
+
+	@ParameterizedTest // Dichiarazione che questo sarà un test parametrico
+	@MethodSource("sumParameters") // I parametri verranno forniti dal metodo statico "sumParameters"
+	void testWithDifferentParameters(int expected, int first, int second) { // ogni esecuzione del test avrà bisogno di
+																			// 3 parametri
+		assertEquals(expected, first + second);
+	}
+
+	static Stream<Arguments> sumParameters() {
+		// Metodo che fornisce i parametri, ogni test avrà bisogno di 3 parametri, qua
+		// dichiarati nella forma
+		// Arguments.arguments(risultato atteso, primo addendo, secondo addendo)
+		return Stream.of(Arguments.arguments(5, 2, 3), Arguments.arguments(7, 3, 4), Arguments.arguments(101, 90, 10));
 	}
 
 }
